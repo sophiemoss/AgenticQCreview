@@ -1,5 +1,6 @@
-## QC agent for screening sequencing QC data and suggesting reruns where required
-## Human-in-the-loop design
+## Agentic QC review of genome sequencing data
+# Screening sequencing QC data and suggesting reruns where required
+# Human-in-the-loop design
 
 ```bash
 python qc_agent.py --qc data/qc_demo.tsv
