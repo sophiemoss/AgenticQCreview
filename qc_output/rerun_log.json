@@ -1,0 +1,17 @@
+[
+  {
+    "sample_id": "DEMO003",
+    "reason": "Low coverage from RUN02: mean_coverage 6.2 (min 15), pct_genome_10x 22.5 (min 80). Mapping 91.3% and freemix 0.005 are fine, so this looks like under-sequencing and re-sequencing could help.",
+    "approved": true
+  },
+  {
+    "sample_id": "DEMO009",
+    "reason": "Low coverage from RUN02: mean_coverage 11.8 (min 15), pct_genome_10x 61.3 (min 80). Mapping 94.2% and freemix 0.006 are fine, so this looks like under-sequencing, the same pattern as DEMO003 from the same run.",
+    "approved": true
+  },
+  {
+    "sample_id": "DEMO005",
+    "reason": "Low mapping rate from RUN03: pct_mapped 72.4 (min 85). Coverage 30.2, pct_genome_10x 90.1 and freemix 0.005 are fine. Re-processing or re-alignment could help, so please check the reference and adapter trimming first.",
+    "approved": true
+  }
+]
