@@ -6,4 +6,6 @@
 python qc_agent.py --qc data/qc_demo.tsv
 ```
 
-`data/qc_demo.tsv` is **simulated** (made by `make_demo_qc.py`), so it is safe to share. Thresholds in `qc_agent.py` are illustrative: set them from your own pipeline validation. 
+`data/qc_demo.tsv` is **simulated** (made by `make_demo_qc.py`), so it is safe to share. 
+
+The thresholds in `qc_agent.py` are illustrative: please set them for your own sequencing requirements.
