@@ -1,26 +1,67 @@
-# WGS QC report (12 samples)
+# WGS QC review: 12 Anopheles samples
 
-Thresholds: mean coverage ≥ 15, % mapped ≥ 85, % genome ≥10x ≥ 80, freemix ≤ 0.03. I called a sample BORDERLINE if it passes but is within 10% of a threshold.
+Thresholds: mean coverage ≥15x, mapped ≥85%, genome covered ≥75%, genome ≥10x ≥60%, freemix ≤0.03. The borderline margin is 10%. All statuses below are as returned by `check_sample`.
 
-| Sample | Status | Reason | Action |
+| Sample | Status | Out of range / near limit | Reasoning | Action |
+|---|---|---|---|---|
+| DEMO001 | PASS | None | All metrics are within range. | Accept |
+| DEMO002 | PASS | None | All metrics are within range. | Accept |
+| DEMO003 | FAIL | Out of range: mean_coverage 6.2x (min 15); pct_genome_covered 48.0% (min 75); pct_genome_10x 41.0% (min 60). Near limit: pct_mapped 93.5% (min 85). | Depth and coverage are all low, while mapping and contamination are fine (freemix 0.003). This looks like an under-sequenced library. I can't tell from these numbers whether the library complexity is adequate. | **Resequence.** I requested it, and the request is queued. The tool output didn't show a human approval or decline, only "queued". |
+| DEMO004 | PASS | None | All metrics are within range. | Accept |
+| DEMO005 | PASS | None | All metrics are within range. | Accept |
+| DEMO006 | FAIL | Out of range: freemix 0.12 (max 0.03). | Depth, mapping and coverage are good, and only contamination fails. Resequencing won't remove contamination. The numbers can't show whether it comes from cross-sample or other-DNA contamination. | **Re-extract**, or exclude if no re-extraction is possible. I did not request resequencing. |
+| DEMO007 | FAIL | Out of range: pct_genome_covered 55.0% (min 75); pct_genome_10x 40.0% (min 60). | Mean depth is adequate (18.0x) but the fraction of the genome covered is low. This suggests uneven coverage. Possible causes include library bias, repeat or reference issues, or a few regions with very high depth. I can't tell which from the numbers. Simply adding more reads is unlikely to fix this. | **Reprocess/inspect existing data:** check the coverage distribution, duplicates and the reference. Consider a new library prep if the unevenness is real. I did not request resequencing. |
+| DEMO008 | PASS | None | All metrics are within range. | Accept |
+| DEMO009 | FAIL | Out of range: pct_mapped 61.5% (min 85). | Depth and genome coverage are good (28.0x, 92.0%) and freemix is low (0.004). Low mapping with adequate depth may point to non-target DNA or a reference mismatch. The numbers can't confirm either cause. | **Check the species call and reference, then remap.** I did not request resequencing. |
+| DEMO010 | PASS | None | All metrics are within range. | Accept |
+| DEMO011 | BORDERLINE | Near limit: mean_coverage 16.0x (min 15); pct_mapped 93.5% (min 85). | Nothing is out of range, but depth is close to the minimum. Coverage and contamination are fine. | **Accept with a note** that depth is marginal. Resequencing is not needed. |
+| DEMO012 | FAIL | Out of range: freemix 0.8 (max 0.03). Missing: pct_mapped (no value). | Contamination is very high. The missing mapping value means this metric couldn't be judged. The other metrics look fine, but they are unreliable given the contamination. | **Exclude**, or re-extract if the material is available. Investigate why pct_mapped is missing. I did not request resequencing. |
+
+**For a human to double-check:**
+- **DEMO003:** confirm the resequencing decision. The tool only reported "queued (demo stub, nothing executed)", so nothing has actually run.
+- **DEMO007:** I chose not to request resequencing because the pattern suggests uneven coverage. A human may disagree and want more data.
+- **DEMO009:** confirm the species and reference.
+- **DEMO012:** the missing pct_mapped may be a pipeline or data-entry fault. Freemix of 0.8 is extreme and could be a sample swap or a metric error as well as real contamination.
+- **DEMO006 and DEMO012:** the contamination source is unknown.
+- **DEMO011:** keep an eye on the marginal depth if it will be used for analyses that need higher coverage.
+
+## Threshold flags (computed by code)
+
+These flags come directly from the QC table and the thresholds file. If the model's table above disagrees with them, this table is correct.
+
+| Sample | Status | Outside the acceptable range | Within the margin of a limit |
 |---|---|---|---|
-| DEMO001 | PASS | cov 32.4, mapped 97.1, 10x 95.2, freemix 0.004 | None |
-| DEMO002 | PASS | cov 28.9, mapped 96.5, 10x 93.8, freemix 0.006 | None |
-| DEMO003 | **FAIL** | cov 6.2, 10x 22.5 (mapped 91.3 and freemix 0.005 are OK) | **Rerun requested** (RUN02, under-sequenced) |
-| DEMO004 | BORDERLINE | cov 16.1 (threshold 15), 10x 82.4 (threshold 80); mapped and freemix OK | Use with caution. No rerun. |
-| DEMO005 | **FAIL** | mapped 72.4 (min 85); cov 30.2, 10x 90.1 and freemix 0.005 are OK | **Rerun/re-alignment requested** (RUN03) |
-| DEMO006 | **FAIL** | freemix 0.081 (max 0.03), about 2.7× the limit; other metrics fine | **Exclude or re-extract.** No rerun, because contamination is not fixed by re-sequencing. |
-| DEMO007 | PASS | cov 35.0, mapped 97.4, 10x 96.0, freemix 0.003 | None |
-| DEMO008 | BORDERLINE | mapped 88.9 (threshold 85), 10x 86.5 (threshold 80); cov 24.3 and freemix 0.009 OK | Use with caution. No rerun. |
-| DEMO009 | **FAIL** | cov 11.8, 10x 61.3 (mapped 94.2 and freemix 0.006 are OK) | **Rerun requested** (RUN02, under-sequenced) |
-| DEMO010 | **FAIL** | freemix 0.032 (max 0.03); other metrics fine | **Exclude or re-extract**, or have a human review it. No rerun. |
-| DEMO011 | PASS | cov 31.1, mapped 97.0, 10x 94.9, freemix 0.004 | None |
-| DEMO012 | BORDERLINE | freemix 0.027, which is exactly 10% below the 0.03 limit; other metrics fine | Use with caution. Consider a contamination re-check. |
+| DEMO001 | PASS | - | - |
+| DEMO002 | PASS | - | - |
+| DEMO003 | FAIL | mean_coverage 6.2 (min 15); pct_genome_covered 48 (min 75); pct_genome_10x 41 (min 60) | pct_mapped 93.5 (min 85) |
+| DEMO004 | PASS | - | - |
+| DEMO005 | PASS | - | - |
+| DEMO006 | FAIL | freemix 0.12 (max 0.03) | - |
+| DEMO007 | FAIL | pct_genome_covered 55 (min 75); pct_genome_10x 40 (min 60) | - |
+| DEMO008 | PASS | - | - |
+| DEMO009 | FAIL | pct_mapped 61.5 (min 85) | - |
+| DEMO010 | PASS | - | - |
+| DEMO011 | BORDERLINE | - | mean_coverage 16 (min 15); pct_mapped 93.5 (min 85) |
+| DEMO012 | FAIL | pct_mapped missing; freemix 0.8 (max 0.03) | - |
 
-**Please double-check:**
-- **DEMO010:** Its freemix of 0.032 is only just over the limit, so a strict cutoff fails it. The call is close enough that a human may want to decide whether to exclude it or re-extract it.
-- **DEMO012:** Its freemix of 0.027 sits exactly on my 10% borderline boundary. I classed it as BORDERLINE, and it is a judgement call.
-- **DEMO004 and DEMO008:** Both are borderline. DEMO004 is close to the minimum on coverage and 10x breadth. DEMO008 is close on mapping and 10x breadth.
-- **Run-level patterns:** Both coverage failures (DEMO003 and DEMO009) came from RUN02, which suggests a run or library-prep problem there. RUN03 has the low-mapping sample (DEMO005), the contaminated sample (DEMO006) and the borderline DEMO008. That points to a possible RUN03 issue such as the reference, adapters or sample handling.
-- **DEMO005 rerun:** Check the reference and trimming before re-sequencing. A low mapping rate can also come from non-target DNA, which a rerun won't fix.
-- **Rerun requests:** I requested reruns for DEMO003, DEMO005 and DEMO009. The tool only reported them as queued in a demo stub, so nothing has actually run, and a human still needs to approve them.
+
+## Thresholds used
+
+| Parameter | Min | Max | Unit | Note |
+|---|---|---|---|---|
+| mean_coverage | 15 | - | x | Mean sequencing depth across the genome |
+| pct_mapped | 85 | - | % | Percentage of reads mapped to the reference |
+| pct_genome_covered | 75 | - | % | Percentage of the genome covered (60% or more is acceptable) |
+| pct_genome_10x | 60 | - | % | Percentage of the genome covered at 10x or more |
+| freemix | - | 0.03 | fraction | Contamination estimate (FREEMIX); lower is better |
+
+BORDERLINE means inside the range but within 10% of a limit.
+
+No threshold was set for these columns, so they were not assessed: species.
+
+
+## Human resequencing decisions
+
+| Sample | Decision | Human note |
+|---|---|---|
+| DEMO003 | resequence approved |  |

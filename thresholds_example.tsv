@@ -1,0 +1,10 @@
+# Acceptable range for each sequencing parameter. One row per parameter in your QC table.
+# 'parameter' must match a column name in the QC table exactly.
+# Leave min or max blank if there is no limit on that side. Lines starting with # are ignored.
+# These values are ILLUSTRATIVE. Set them from your own pipeline's validation.
+parameter	min	max	unit	note
+mean_coverage	15		x	Mean sequencing depth across the genome
+pct_mapped	85		%	Percentage of reads mapped to the reference
+pct_genome_covered	75		%	Percentage of the genome covered (60% or more is acceptable)
+pct_genome_10x	60		%	Percentage of the genome covered at 10x or more
+freemix		0.03	fraction	Contamination estimate (FREEMIX); lower is better

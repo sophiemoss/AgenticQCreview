@@ -45,8 +45,13 @@ python -m unittest -v               # offline tests, no key or internet needed
 ## Usage
 
 ```bash
-python qc_agent.py --qc data/qc_demo.tsv                  # asks you to approve each rerun
-python qc_agent.py --qc data/qc_demo.tsv --auto-approve   # approves all reruns (demo only)
+# Interactive: asks you to approve each resequencing request
+python qc_agent.py --qc data/qc_Anopheles_demo_data.tsv --thresholds thresholds_example.tsv
+
+# Demo only: approves every request automatically (skips the human check)
+python qc_agent.py --qc data/qc_Anopheles_demo_data.tsv --auto-approve
+
+# Your own data, with a chosen model and output folder
 python qc_agent.py --qc your_qc.tsv --model <model-name> --outdir qc_output
 ```
 
@@ -124,7 +129,6 @@ These tests verify the **code around the model**. They do not measure how accura
 
 ## Limitations
 
-- **Classification is done by the model, not by code.** The thresholds are given to the model, which applies them. A more robust design computes PASS, BORDERLINE or FAIL in a deterministic tool and lets the model handle reasoning, recommendations and the report. This is a good next step.
 - **Run-to-run variation.** Language models can answer differently on repeated runs. Check important calls against the underlying metrics, which the report quotes.
 - **Column names matter.** The thresholds refer to the demo's column names. A table with different names needs matching changes to the thresholds and system prompt.
 - **Demo thresholds and species-agnostic rules.** Real QC criteria vary by project, species and sequencing platform.
